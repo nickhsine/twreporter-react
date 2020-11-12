@@ -26,11 +26,13 @@ import cloneUtils from '../utils/shallow-clone-entity'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
 import throttle from 'lodash/throttle'
+import uniq from 'lodash/uniq'
 
 const _ = {
   forEach,
   get,
   throttle,
+  uniq,
 }
 
 const { actions, actionTypes, reduxStateFields } = twreporterRedux
@@ -353,7 +355,9 @@ function postProp(state, id) {
  *  @return {MetaOfPost[]}
  */
 function relatedsProp(state, id) {
-  const relatedPostIds = _.get(state, [relatedPostsOf, 'byId', id, 'items'], [])
+  const relatedPostIds = _.uniq(
+    _.get(state, [relatedPostsOf, 'byId', id, 'items'], [])
+  )
   const relateds = []
   _.forEach(relatedPostIds, postId => {
     // skip because of duplicate
